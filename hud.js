@@ -4,10 +4,10 @@ let objects = [];
 
 function createRandomObject() {
   const geometries = [
-    new THREE.TorusGeometry(0.1, 0.03, 8, 32),
+    new THREE.TorusGeometry(0.1, 0.03, 6, 16),
     new THREE.BoxGeometry(0.1, 0.1, 0.2),
-    new THREE.ConeGeometry(0.1, 0.2, 8),
-    new THREE.CylinderGeometry(0.03, 0.03, 0.2, 8),
+    new THREE.ConeGeometry(0.1, 0.2, 6),
+    new THREE.CylinderGeometry(0.03, 0.03, 0.2, 6),
   ];
 
   const palette = [
@@ -93,7 +93,10 @@ function onMouseDown(event) {
 
 function init() {
   // Set up renderer, scene, and camera
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer({
+  antialias: false, // Disable antialiasing
+  precision: "lowp", // Set precision to low
+});
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   scene = new THREE.Scene();
@@ -231,52 +234,6 @@ function animate() {
   // Render the scene
   renderer.render(scene, camera);
 }
-
-
-
-function animate() {
-  const MAX_SCALE = 4; // Maximum scale value
-  requestAnimationFrame(animate);
-
-  // Animate HUD elements
-  for (let i = 0; i < objects.length; i++) {
-    for (let j = 0; j < objects[i].length; j++) {
-      const obj = objects[i][j];
-      if (obj) {
-        obj.rotation.x += 0.01;
-        obj.rotation.y += 0.01;
-      }
-    }
-  }
-
-  // Apply scale factor to the most recently clicked object
-  if (clickedObjects.length > 0) {
-    const mostRecentObj = clickedObjects[clickedObjects.length - 1];
-    let scaleFactor = mostRecentObj.scale.x * 1.005;
-    scaleFactor = Math.min(scaleFactor, MAX_SCALE);
-    mostRecentObj.scale.set(scaleFactor, scaleFactor, scaleFactor);
-
-    // Absorb intersecting meshes
-    const box1 = new THREE.Box3().setFromObject(mostRecentObj);
-    for (let i = 0; i < objects.length; i++) {
-      for (let j = 0; j < objects[i].length; j++) {
-        const obj = objects[i][j];
-        if (obj && !clickedObjects.includes(obj)) { // Only check objects that haven't been clicked
-          const box2 = new THREE.Box3().setFromObject(obj);
-          if (box1.intersectsBox(box2)) {
-            scene.remove(obj);
-            objects[i][j] = null;
-          }
-        }
-      }
-    }
-  }
-
-  // Render the scene
-  renderer.render(scene, camera);
-}
-
-
 
 init();
 animate();
