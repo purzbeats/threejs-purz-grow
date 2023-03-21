@@ -192,8 +192,30 @@ function onWindowResize() {
 }
 
 
+// Create Stats display
+const stats = new Stats();
+stats.showPanel(0); // Show FPS panel
+document.body.appendChild(stats.dom);
+
+// Make the Stats display invisible initially
+stats.dom.style.display = "none";
+
+// Add a key event listener to toggle the display on and off
+window.addEventListener("keydown", (event) => {
+  if (event.key === "p" || event.key === "P") {
+    if (stats.dom.style.display === "none") {
+      stats.dom.style.display = "block";
+    } else {
+      stats.dom.style.display = "none";
+    }
+  }
+});
+
+
 function animate() {
   requestAnimationFrame(animate);
+
+  stats.begin();
 
   // Animate HUD elements
   for (let i = 0; i < objects.length; i++) {
@@ -229,8 +251,11 @@ function animate() {
     }
   }
 
+  stats.end();
   // Render the scene
   renderer.render(scene, camera);
+
+
 }
 
 
