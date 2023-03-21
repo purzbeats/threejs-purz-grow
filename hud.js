@@ -93,10 +93,7 @@ function onMouseDown(event) {
 
 function init() {
   // Set up renderer, scene, and camera
-  renderer = new THREE.WebGLRenderer({
-  antialias: false, // Disable antialiasing
-  precision: "lowp", // Set precision to low
-});
+  renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   scene = new THREE.Scene();
@@ -234,6 +231,7 @@ function animate() {
   // Render the scene
   renderer.render(scene, camera);
 }
+
 
 init();
 animate();
