@@ -1,6 +1,7 @@
 // Variables for renderer, scene, camera, and HUD elements
 let renderer, scene, camera;
 let objects = [];
+let lastFrameTime = performance.now();
 
 function createRandomObject() {
   const geometries = [
@@ -215,15 +216,21 @@ window.addEventListener("keydown", (event) => {
 function animate() {
   requestAnimationFrame(animate);
 
-  stats.begin();
+  // Calculate the time delta
+  const currentTime = performance.now();
+  const deltaTime = (currentTime - lastFrameTime) / 1000; // Delta time in seconds
+  lastFrameTime = currentTime;
+
+  // Rotation speed in radians per second
+  const rotationSpeed = 0.5 * Math.PI;
 
   // Animate HUD elements
   for (let i = 0; i < objects.length; i++) {
     for (let j = 0; j < objects[i].length; j++) {
       const obj = objects[i][j];
       if (obj) {
-        obj.rotation.x += 0.01;
-        obj.rotation.y += 0.01;
+        obj.rotation.x += rotationSpeed * deltaTime;
+        obj.rotation.y += rotationSpeed * deltaTime;
       }
     }
   }
