@@ -94,6 +94,7 @@ function onMouseDown(event) {
 function init() {
   // Set up renderer, scene, and camera
   renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1)); // Set the maximum pixel ratio to 1.5
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   scene = new THREE.Scene();
